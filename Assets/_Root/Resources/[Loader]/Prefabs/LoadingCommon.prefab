@@ -3892,7 +3892,7 @@ MonoBehaviour:
   background: {fileID: 6093724075085323141}
   singleBackgroundSprite: {fileID: 0}
   backgroundCollection: []
-  isAutoChangeBg: 1
+  isAutoChangeBg: 0
   timeAutoChangeBg: 5
   backgroundFadingSpeed: 1
   backgroundAnimator: {fileID: 7319477345127259563}
@@ -3915,7 +3915,7 @@ MonoBehaviour:
   mainLoadingAnimator: {fileID: 4793683857312699445}
   virtualLoadTime: 5
   enableVirtualLoading: 0
-  enableRandomBackground: 1
+  enableRandomBackground: 0
   fadingAnimationSpeed: 2
   timeDelayDestroy: 1.5
   onBeginEvents:

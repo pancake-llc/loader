@@ -358,15 +358,12 @@ namespace Pancake.LoaderEditor
 
                         GUILayout.EndHorizontal();
                         GUILayout.Space(4);
-                        GUILayout.BeginHorizontal();
+
                         EditorGUI.indentLevel = 1;
-
                         EditorGUILayout.PropertyField(hintsCollection, new GUIContent("Hints Collection"), true);
-
                         EditorGUI.indentLevel = 0;
-                        GUILayout.Space(6);
-                        GUILayout.EndHorizontal();
-
+                        
+                        GUILayout.Space(4);
                         if (GUILayout.Button("Add a new hint", customSkin.button)) _loadingScreen.hintsCollection.Add("Type your hint here.");
 
                         if (_loadingScreen.txtHints == null)
@@ -434,9 +431,7 @@ namespace Pancake.LoaderEditor
                     if (_loadingScreen.background == null)
                     {
                         GUILayout.Space(4);
-                        GUILayout.BeginHorizontal();
                         EditorGUILayout.HelpBox("'Image Object' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
-                        GUILayout.EndHorizontal();
                     }
 
                     GUILayout.EndVertical();
