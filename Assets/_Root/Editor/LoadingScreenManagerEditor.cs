@@ -41,39 +41,29 @@ namespace Pancake.LoaderEditor
 
             if (_prefabLoadingNames.Count == 1 || _prefabLoadingNames.Count >= 1)
             {
-                GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
+                GUILayout.BeginVertical(EditorStyles.helpBox);
+                GUILayout.Space(4);
+                GUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent("Selected Screen"), customSkin.FindStyle("Text"), GUILayout.Width(120));
                 selectedLoadingIndex.intValue = EditorGUILayout.Popup(selectedLoadingIndex.intValue, _prefabLoadingNames.ToArray());
                 prefabLoadingName.stringValue = _loadingScreenManager.loadingScreens[selectedLoadingIndex.intValue]
                     .ToString()
                     .Replace(" (UnityEngine.GameObject)", "")
                     .Trim();
-
                 GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                GUILayout.Space(6);
                 EditorGUI.indentLevel = 1;
-
                 EditorGUILayout.PropertyField(dontDestroyOnLoad, new GUIContent("Don't Destroy On Load"), true);
-
                 EditorGUI.indentLevel = 0;
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginVertical(EditorStyles.helpBox);
-                EditorGUI.indentLevel = 1;
-
+                GUILayout.Space(4);
                 EditorGUILayout.PropertyField(unityEventOnBegin, new GUIContent("OnBegin"), true);
+                GUILayout.Space(4);
                 EditorGUILayout.PropertyField(unityEventOnFinish, new GUIContent("OnFinish"), true);
-
-                EditorGUI.indentLevel = 0;
+                GUILayout.Space(4);
                 GUILayout.EndVertical();
-
-                // if (GUILayout.Button("Show Selected Loading", customSkin.button))
-                //     Selection.activeObject = Resources.Load("Loading Screens/" + lsList[lsmTarget.selectedLoadingIndex]);
             }
 
-            else EditorGUILayout.HelpBox("There isn't any loading screen prefab in Packages > Loading > Prefabs folder!", MessageType.Warning);
+            else EditorGUILayout.HelpBox("There isn't any loading screen prefab in Resources > [Loader] > Prefabs folder!", MessageType.Warning);
 
             GUILayout.Space(6);
             serializedObject.ApplyModifiedProperties();
