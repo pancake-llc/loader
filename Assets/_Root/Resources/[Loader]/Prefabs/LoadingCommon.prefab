@@ -3883,7 +3883,7 @@ MonoBehaviour:
   txtCountdownPak: {fileID: 4769467629202454561}
   sliderCountdownPak: {fileID: 1663914041350340214}
   keyCode: 32
-  useSpecificKey: 1
+  useSpecificKey: 0
   pakCountdownTimer: 5
   spinnerColor: {r: 0.5707547, g: 0.922659, b: 1, a: 1}
   spinnerItem: {fileID: 0}
@@ -3892,12 +3892,12 @@ MonoBehaviour:
   background: {fileID: 6093724075085323141}
   singleBackgroundSprite: {fileID: 0}
   backgroundCollection: []
-  isAutoChangeBg: 0
+  isAutoChangeBg: 1
   timeAutoChangeBg: 5
   backgroundFadingSpeed: 1
   backgroundAnimator: {fileID: 7319477345127259563}
   enableStatusLabel: 0
-  txtStatus: {fileID: 0}
+  txtStatus: {fileID: 6717435950319145430}
   statusFont: {fileID: 0}
   statusSize: 24
   statusColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3915,7 +3915,7 @@ MonoBehaviour:
   mainLoadingAnimator: {fileID: 4793683857312699445}
   virtualLoadTime: 5
   enableVirtualLoading: 0
-  enableRandomBackground: 0
+  enableRandomBackground: 1
   fadingAnimationSpeed: 2
   timeDelayDestroy: 1.5
   onBeginEvents:

@@ -25,7 +25,7 @@ namespace Pancake.LoaderEditor
 
         private void OnEnable()
         {
-            _loadingScreen = (LoadingScreen)target;
+            _loadingScreen = (LoadingScreen) target;
 
             _spinnerList.Clear();
             foreach (Transform child in _loadingScreen.spinnerParent)
@@ -44,7 +44,7 @@ namespace Pancake.LoaderEditor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            var customSkin = (GUISkin)Resources.Load("loader-dark-skin");
+            var customSkin = (GUISkin) Resources.Load("loader-dark-skin");
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -141,14 +141,14 @@ namespace Pancake.LoaderEditor
             switch (_currentTab)
             {
                 case 0:
-
+                    GUILayout.Label("SPINNER", customSkin.FindStyle("Header"));
                     GUILayout.BeginVertical(EditorStyles.helpBox);
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(new GUIContent("Selected Spinner"), customSkin.FindStyle("Text"), GUILayout.Width(120));
 
                     _selectedSpinnerIndex = EditorGUILayout.Popup(_selectedSpinnerIndex, _spinnerTitles.ToArray());
                     _loadingScreen.spinnerIndex = _selectedSpinnerIndex;
-                    
+
                     if (GUILayout.Button("Update", customSkin.button))
                     {
                         if (isHints.boolValue)
@@ -207,33 +207,9 @@ namespace Pancake.LoaderEditor
                     }
 
                     GUILayout.EndHorizontal();
-                    
-                    
-                    GUILayout.EndVertical();
-                    
-
-                    for (int i = 0; i < _loadingScreen.spinnerParent.childCount; i++)
-                    {
-                        var child = _loadingScreen.spinnerParent.GetChild(i);
-                        if (child.name != _spinnerList[_selectedSpinnerIndex].ToString().Replace(" (UnityEngine.RectTransform)", "").Trim())
-                            child.gameObject.SetActive(false);
-                        else
-                            child.gameObject.SetActive(true);
-                    }
-
-                    GUILayout.Space(18);
-
-                    
-
-
-                    GUILayout.BeginVertical(EditorStyles.helpBox);
-                    EditorGUILayout.LabelField(new GUIContent("Spinner"), customSkin.FindStyle("Text"), GUILayout.Width(100));
-                    GUILayout.BeginHorizontal();
-
+                    GUILayout.Space(4);
                     EditorGUILayout.PropertyField(spinnerColor, new GUIContent(""));
-
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
+                    GUILayout.Space(4);
                     GUILayout.BeginHorizontal();
 
                     if (GUILayout.Button("Restore Collor", customSkin.button))
@@ -318,6 +294,17 @@ namespace Pancake.LoaderEditor
                     }
 
                     GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+
+
+                    for (int i = 0; i < _loadingScreen.spinnerParent.childCount; i++)
+                    {
+                        var child = _loadingScreen.spinnerParent.GetChild(i);
+                        if (child.name != _spinnerList[_selectedSpinnerIndex].ToString().Replace(" (UnityEngine.RectTransform)", "").Trim())
+                            child.gameObject.SetActive(false);
+                        else child.gameObject.SetActive(true);
+                    }
+
                     GUILayout.Space(18);
                     GUILayout.Label("EDITOR DEBUG", customSkin.FindStyle("Header"));
 
@@ -354,34 +341,24 @@ namespace Pancake.LoaderEditor
                         EditorGUILayout.PropertyField(hintsColor, new GUIContent(""));
 
                         GUILayout.EndHorizontal();
-                        
-                    }
-                    GUILayout.EndVertical();
 
-                    if (isHints.boolValue)
-                    {
-                        if (txtHints.objectReferenceValue != null)
-                            _loadingScreen.txtHints.gameObject.SetActive(true);
-
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                        if (txtHints.objectReferenceValue != null) _loadingScreen.txtHints.gameObject.SetActive(true);
+                        GUILayout.Space(4);
+                        GUILayout.BeginHorizontal();
 
                         isChangeHintsWithTimer.boolValue =
                             GUILayout.Toggle(isChangeHintsWithTimer.boolValue, new GUIContent("Change With Timer"), customSkin.FindStyle("Toggle"));
-                        isChangeHintsWithTimer.boolValue = GUILayout.Toggle(isChangeHintsWithTimer.boolValue, new GUIContent(""), customSkin.FindStyle("Toggle Helper"));
-
-                        GUILayout.EndHorizontal();
-
                         if (isChangeHintsWithTimer.boolValue)
                         {
-                            GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
-                            EditorGUILayout.LabelField(new GUIContent("Timer Value"), customSkin.FindStyle("Text"), GUILayout.Width(120));
+                            GUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField(new GUIContent(""), customSkin.FindStyle("Text"), GUILayout.Width(130));
                             EditorGUILayout.PropertyField(hintsLifeTime, new GUIContent(""));
-
                             GUILayout.EndHorizontal();
                         }
 
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                        GUILayout.EndHorizontal();
+                        GUILayout.Space(4);
+                        GUILayout.BeginHorizontal();
                         EditorGUI.indentLevel = 1;
 
                         EditorGUILayout.PropertyField(hintsCollection, new GUIContent("Hints Collection"), true);
@@ -390,8 +367,7 @@ namespace Pancake.LoaderEditor
                         GUILayout.Space(6);
                         GUILayout.EndHorizontal();
 
-                        if (GUILayout.Button("Add a new hint", customSkin.button))
-                            _loadingScreen.hintsCollection.Add("Type your hint here.");
+                        if (GUILayout.Button("Add a new hint", customSkin.button)) _loadingScreen.hintsCollection.Add("Type your hint here.");
 
                         if (_loadingScreen.txtHints == null)
                         {
@@ -400,89 +376,72 @@ namespace Pancake.LoaderEditor
                             GUILayout.EndHorizontal();
                         }
                     }
+                    else if (isHints.boolValue == false && txtHints.objectReferenceValue != null) _loadingScreen.txtHints.gameObject.SetActive(false);
 
-                    else if (isHints.boolValue == false && txtHints.objectReferenceValue != null)
-                        _loadingScreen.txtHints.gameObject.SetActive(false);
+                    GUILayout.EndVertical();
 
                     GUILayout.Space(6);
                     break;
 
                 case 2:
                     GUILayout.Label("BACKGROUND", customSkin.FindStyle("Header"));
-                    GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                    GUILayout.BeginVertical(EditorStyles.helpBox);
 
-                    enableRandomBackground.boolValue = GUILayout.Toggle(enableRandomBackground.boolValue,
-                        new GUIContent("Enable Random Background"),
-                        customSkin.FindStyle("Toggle"));
-                    enableRandomBackground.boolValue = GUILayout.Toggle(enableRandomBackground.boolValue, new GUIContent(""), customSkin.FindStyle("Toggle Helper"));
-
-                    GUILayout.EndHorizontal();
-
+                    enableRandomBackground.boolValue = GUILayout.Toggle(enableRandomBackground.boolValue, new GUIContent("Enable Random Background"), customSkin.FindStyle("Toggle"));
                     if (enableRandomBackground.boolValue)
                     {
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
-                        isAutoChangeBg.boolValue = GUILayout.Toggle(isAutoChangeBg.boolValue, new GUIContent("Change With Timer"), customSkin.FindStyle("Toggle"));
-                        isAutoChangeBg.boolValue = GUILayout.Toggle(isAutoChangeBg.boolValue, new GUIContent(""), customSkin.FindStyle("Toggle Helper"));
-
-                        GUILayout.EndHorizontal();
-
-                        if (isAutoChangeBg.boolValue)
-                        {
-                            GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
-                            EditorGUILayout.LabelField(new GUIContent("Time"), customSkin.FindStyle("Text"), GUILayout.Width(120));
-                            EditorGUILayout.PropertyField(timeAutoChangeBg, new GUIContent(""));
-
-                            GUILayout.EndHorizontal();
-                            GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
-                            EditorGUILayout.LabelField(new GUIContent("Fading Speed"), customSkin.FindStyle("Text"), GUILayout.Width(120));
-                            EditorGUILayout.PropertyField(backgroundFadingSpeed, new GUIContent(""));
-
-                            GUILayout.EndHorizontal();
-                        }
-
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                        GUILayout.BeginHorizontal();
                         EditorGUI.indentLevel = 1;
 
                         EditorGUILayout.PropertyField(backgroundCollection, new GUIContent("Backgrounds"), true);
                         backgroundCollection.isExpanded = true;
 
                         EditorGUI.indentLevel = 0;
-                        GUILayout.Space(6);
+                        GUILayout.Space(4);
                         GUILayout.EndHorizontal();
-
-                        if (_loadingScreen.background == null)
+                        
+                        EditorGUI.indentLevel = 1;
+                        isAutoChangeBg.boolValue = GUILayout.Toggle(isAutoChangeBg.boolValue, new GUIContent("Change With Timer"), customSkin.FindStyle("Toggle"));
+                        if (isAutoChangeBg.boolValue)
                         {
                             GUILayout.BeginHorizontal();
-                            EditorGUILayout.HelpBox("'Image Object' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
+                            EditorGUILayout.LabelField(new GUIContent("Time"), customSkin.FindStyle("Text"), GUILayout.Width(120));
+                            EditorGUILayout.PropertyField(timeAutoChangeBg, new GUIContent(""));
+                            GUILayout.EndHorizontal();
+                            
+                            GUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField(new GUIContent("Fading Speed"), customSkin.FindStyle("Text"), GUILayout.Width(120));
+                            EditorGUILayout.PropertyField(backgroundFadingSpeed, new GUIContent(""));
                             GUILayout.EndHorizontal();
                         }
-
-                        if (GUILayout.Button("Add a new image", customSkin.button))
-                            _loadingScreen.backgroundCollection.Add(null);
                     }
-
                     else
                     {
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                        GUILayout.BeginHorizontal();
 
                         EditorGUILayout.LabelField(new GUIContent("Background"), customSkin.FindStyle("Text"), GUILayout.Width(120));
                         EditorGUILayout.PropertyField(singleBackgroundSprite, new GUIContent(""));
 
                         GUILayout.EndHorizontal();
 
-                        if (_loadingScreen.background != null)
-                        {
-                            _loadingScreen.background.sprite = _loadingScreen.singleBackgroundSprite;
-                        }
+                        if (_loadingScreen.background != null) _loadingScreen.background.sprite = _loadingScreen.singleBackgroundSprite;
 
                         updateHelper.boolValue = true;
                         updateHelper.boolValue = false;
                     }
+                    
+                    EditorGUI.indentLevel = 0;
+                    if (_loadingScreen.background == null)
+                    {
+                        GUILayout.Space(4);
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.HelpBox("'Image Object' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
+                        GUILayout.EndHorizontal();
+                    }
 
-                    GUILayout.Space(6);
+                    GUILayout.EndVertical();
+
+                    GUILayout.Space(4);
                     break;
 
                 case 3:
@@ -585,7 +544,7 @@ namespace Pancake.LoaderEditor
                         EditorGUILayout.LabelField(new GUIContent("Schema"), customSkin.FindStyle("Text"), GUILayout.Width(100));
                         EditorGUILayout.PropertyField(statusSchema, new GUIContent(""), GUILayout.Height(25));
 
-                        GUILayout.Space(4);
+                        GUILayout.Space(2);
                         EditorGUILayout.LabelField(new GUIContent("Font"), customSkin.FindStyle("Text"), GUILayout.Width(100));
                         GUILayout.BeginHorizontal();
 
@@ -597,16 +556,18 @@ namespace Pancake.LoaderEditor
 
                         if (txtStatus == null || txtStatus.objectReferenceValue == null)
                         {
-                            GUILayout.Space(4);
+                            GUILayout.Space(2);
                             EditorGUILayout.HelpBox("'Status Label' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
                         }
+
+                        GUILayout.Space(2);
                     }
 
                     if (txtStatus != null && txtStatus.objectReferenceValue != null) _loadingScreen.txtStatus.gameObject.SetActive(enableStatusLabel.boolValue);
 
                     GUILayout.EndVertical();
 
-                    GUILayout.Space(4);
+                    GUILayout.Space(2);
 
                     GUILayout.BeginVertical(EditorStyles.helpBox);
 
@@ -621,68 +582,72 @@ namespace Pancake.LoaderEditor
 
 
                         EditorGUILayout.LabelField(new GUIContent("Font"), GUILayout.Width(100));
-                        GUILayout.BeginHorizontal();
 
+                        GUILayout.BeginHorizontal();
                         EditorGUILayout.PropertyField(pakSize, new GUIContent(""), GUILayout.Width(40));
                         EditorGUILayout.PropertyField(pakFont, new GUIContent(""));
                         EditorGUILayout.PropertyField(pakColor, new GUIContent(""));
-
                         GUILayout.EndHorizontal();
 
+                        GUILayout.Space(2);
                         EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(new GUIContent("Use Specific PAK key"), GUILayout.Width(130));
-
-                        useSpecificKey.boolValue = EditorGUILayout.Toggle(useSpecificKey.boolValue);
-                        if (useSpecificKey.boolValue) EditorGUILayout.PropertyField(keyCode, new GUIContent(""));
-                        GUILayout.FlexibleSpace();
+                        useSpecificKey.boolValue = GUILayout.Toggle(useSpecificKey.boolValue, new GUIContent("Use Specific PAK key"), customSkin.FindStyle("Toggle"));
+                        if (useSpecificKey.boolValue)
+                        {
+                            GUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField(new GUIContent(""), customSkin.FindStyle("Text"), GUILayout.Width(130));
+                            EditorGUILayout.PropertyField(keyCode, new GUIContent(""));
+                            GUILayout.EndHorizontal();
+                        }
 
                         EditorGUILayout.EndHorizontal();
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(new GUIContent("PAK Countdown"), customSkin.FindStyle("Text"), GUILayout.Width(120));
+                        EditorGUILayout.PropertyField(pakCountdownTimer, new GUIContent(""));
+                        GUILayout.EndHorizontal();
+
+                        if (_loadingScreen.mainLoadingAnimator == null && enablePressAnyKey.boolValue)
+                        {
+                            GUILayout.Space(2);
+                            GUILayout.BeginHorizontal();
+                            EditorGUILayout.HelpBox("'Main Animator' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
+                            GUILayout.EndHorizontal();
+                        }
+
+                        GUILayout.Space(2);
                     }
 
                     GUILayout.EndVertical();
-                    GUILayout.Space(4);
 
-                    if (_loadingScreen.mainLoadingAnimator == null && enablePressAnyKey.boolValue)
-                    {
-                        GUILayout.BeginHorizontal();
-                        EditorGUILayout.HelpBox("'Main Animator' is not assigned. Go to Resources tab and assign the correct variable.", MessageType.Error);
-                        GUILayout.EndHorizontal();
-                    }
-
+                    GUILayout.Space(2);
                     GUILayout.BeginVertical(EditorStyles.helpBox);
 
                     enableVirtualLoading.boolValue =
                         GUILayout.Toggle(enableVirtualLoading.boolValue, new GUIContent("Enable Virtual Loading"), customSkin.FindStyle("Toggle"));
 
                     if (enableVirtualLoading.boolValue) EditorGUILayout.PropertyField(virtualLoadTime, new GUIContent("Virtual Load Time"));
-
+                    GUILayout.Space(2);
                     GUILayout.EndVertical();
 
+                    GUILayout.Space(2);
 
-                    GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                    GUILayout.BeginVertical(EditorStyles.helpBox);
+                    GUILayout.BeginHorizontal();
 
                     EditorGUILayout.LabelField(new GUIContent("Fading Speed"), customSkin.FindStyle("Text"), GUILayout.Width(120));
                     EditorGUILayout.PropertyField(fadingAnimationSpeed, new GUIContent(""));
 
                     GUILayout.EndHorizontal();
 
-
-                    if (enablePressAnyKey.boolValue)
-                    {
-                        GUILayout.BeginHorizontal(EditorStyles.helpBox);
-
-                        EditorGUILayout.LabelField(new GUIContent("PAK Countdown"), customSkin.FindStyle("Text"), GUILayout.Width(120));
-                        EditorGUILayout.PropertyField(pakCountdownTimer, new GUIContent(""));
-
-                        GUILayout.EndHorizontal();
-                    }
-
-                    GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                    GUILayout.Space(2);
+                    GUILayout.BeginHorizontal();
 
                     EditorGUILayout.LabelField(new GUIContent("Time Delay Destroy"), customSkin.FindStyle("Text"), GUILayout.Width(120));
                     EditorGUILayout.PropertyField(timeDelayDestroy, new GUIContent(""));
 
                     GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
 
                     GUILayout.Space(18);
                     GUILayout.Label("EVENTS", customSkin.FindStyle("Header"));
