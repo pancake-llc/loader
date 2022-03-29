@@ -46,14 +46,6 @@ namespace Pancake.LoaderEditor
             serializedObject.Update();
             var customSkin = (GUISkin) Resources.Load("loader-dark-skin");
 
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            //GUILayout.Box(new GUIContent(""), customSkin.FindStyle("LS Top Header"));
-
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-
             var toolbarTabs = new GUIContent[5];
             toolbarTabs[0] = new GUIContent("Layout");
             toolbarTabs[1] = new GUIContent("Hints");
