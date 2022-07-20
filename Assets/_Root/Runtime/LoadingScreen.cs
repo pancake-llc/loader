@@ -5,7 +5,7 @@ using System.Globalization;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using MEC;
-using Snorlax.Common;
+using Pancake.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
@@ -15,6 +15,7 @@ using UnityEngine.UI;
 namespace Pancake.Loader
 {
     [RequireComponent(typeof(CanvasGroup))]
+    [AddComponentMenu("")]
     public class LoadingScreen : MonoBehaviour
     {
         private static LoadingScreen instance;
@@ -177,7 +178,7 @@ namespace Pancake.Loader
             {
                 Debug.LogError("<b><color=orange>[Loading]</color></b> Cannot initalize the loading screen because either <b><color=orange>'" + sceneName +
                                "'</color></b> scene has not been added to the build window, or <b><color=orange>'" + prefabName +
-                               "'</color></b> prefab cannot be found in <b>Packages/Loading/Prefabs</b>.");
+                               "'</color></b> prefab cannot be found in addressable.");
                 Destroy(instance.gameObject);
                 processLoading = false;
             }

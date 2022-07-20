@@ -11,12 +11,7 @@ namespace Pancake.Loader
         public List<GameObject> dontDestroyOnLoad = new List<GameObject>();
         public UnityEvent onBeginEvents;
         public UnityEvent onFinishEvents;
-
-#if UNITY_EDITOR
-        public List<GameObject> loadingScreens = new List<GameObject>();
-        public int selectedLoadingIndex = 0;
-#endif
-
+        
         /// <summary>
         /// <see cref="funcWaiting"/> and <see cref="prepareActiveScene"/> only use for fakeloading
         /// </summary>

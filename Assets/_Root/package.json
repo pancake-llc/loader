@@ -2,7 +2,7 @@
   "name": "com.pancake.loader",
   "displayName": "Loading",
   "description": "Provider easy scene loading for unity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2019.1",
   "category": "pancake",
   "author": {
@@ -15,6 +15,7 @@
     "loading"
   ],
   "dependencies": {
+    "com.unity.addressables": "1.19.19"
   },
   "repository": {
     "type": "git",

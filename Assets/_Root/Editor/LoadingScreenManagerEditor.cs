@@ -1,8 +1,10 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Pancake.Loader;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Pancake.LoaderEditor
 {
@@ -11,19 +13,23 @@ namespace Pancake.LoaderEditor
     {
         private LoadingScreenManager _loadingScreenManager;
         private readonly List<string> _prefabLoadingNames = new List<string>();
+        private int _selectedLoadingIndex = 0;
 
         private void OnEnable() { Load(); }
 
-        private void Load()
+        private async void Load()
         {
-            _loadingScreenManager = (LoadingScreenManager)target;
-            _loadingScreenManager.loadingScreens.Clear();
+            _loadingScreenManager = (LoadingScreenManager) target;
             _prefabLoadingNames.Clear();
-            var results = Resources.LoadAll<GameObject>("[Loader]/Prefabs");
-            foreach (var obj in results)
+            var results = await Addressables.LoadResourceLocationsAsync("loader");
+            
+            for (int i = 0; i < results.Count; i++)
             {
-                _loadingScreenManager.loadingScreens.Add(obj);
-                _prefabLoadingNames.Add(obj.name);
+                _prefabLoadingNames.Add(results[i].PrimaryKey);
+                if (!string.IsNullOrEmpty(_loadingScreenManager.prefabLoadingName) && _loadingScreenManager.prefabLoadingName.Equals(results[i].PrimaryKey))
+                {
+                    _selectedLoadingIndex = i;
+                }
             }
         }
 
@@ -31,11 +37,10 @@ namespace Pancake.LoaderEditor
         {
             if (_loadingScreenManager == null || _prefabLoadingNames.Count == 0) Load();
 
-            var customSkin = (GUISkin)Resources.Load("loader-dark-skin");
+            var customSkin = (GUISkin) Resources.Load("loader-dark-skin");
 
             var dontDestroyOnLoad = serializedObject.FindProperty("dontDestroyOnLoad");
             var prefabLoadingName = serializedObject.FindProperty("prefabLoadingName");
-            var selectedLoadingIndex = serializedObject.FindProperty("selectedLoadingIndex");
             var unityEventOnBegin = serializedObject.FindProperty("onBeginEvents");
             var unityEventOnFinish = serializedObject.FindProperty("onFinishEvents");
 
@@ -44,12 +49,9 @@ namespace Pancake.LoaderEditor
                 GUILayout.BeginVertical(EditorStyles.helpBox);
                 GUILayout.Space(4);
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(new GUIContent("Selected Screen"), customSkin.FindStyle("Text"), GUILayout.Width(120));
-                selectedLoadingIndex.intValue = EditorGUILayout.Popup(selectedLoadingIndex.intValue, _prefabLoadingNames.ToArray());
-                prefabLoadingName.stringValue = _loadingScreenManager.loadingScreens[selectedLoadingIndex.intValue]
-                    .ToString()
-                    .Replace(" (UnityEngine.GameObject)", "")
-                    .Trim();
+                EditorGUILayout.LabelField(new GUIContent("Selected Template"), customSkin.FindStyle("Text"), GUILayout.Width(120));
+                _selectedLoadingIndex = EditorGUILayout.Popup(_selectedLoadingIndex, _prefabLoadingNames.ToArray());
+                prefabLoadingName.stringValue = _prefabLoadingNames[_selectedLoadingIndex];
                 GUILayout.EndHorizontal();
                 GUILayout.Space(6);
                 EditorGUI.indentLevel = 1;
