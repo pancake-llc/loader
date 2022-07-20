@@ -63,3 +63,6 @@ Ex:
         _loading.LoadScene("menu");
     }
 ```
+
+# Notes
+You should make a copy from the `LoadingCommon` template because it is located in the Immutable folder under the `Packages` folder
