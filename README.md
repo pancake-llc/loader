@@ -4,6 +4,7 @@ Add the lines below to `Packages/manifest.json`
 
 - for version `1.0.1`
 ```csharp
+    "com.pancake.loader": "https://github.com/pancake-llc/loader.git?path=Assets/_Root#1.0.1"
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.3.1",
     "com.pancake.common": "https://github.com/pancake-llc/common.git?path=Assets/_Root#1.2.5",
 ```
